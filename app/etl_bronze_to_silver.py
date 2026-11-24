@@ -6,7 +6,7 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-S3_ENDPOINT = os.getenv("MINIO_ENDPOINT", "http://minio:9000")
+MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT", "http://minio:9000")
 AWS_ACCESS_KEY_ID = os.getenv("MINIO_ACCESS_KEY", "admin")
 AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_SECRET_KEY", "13082004A")
 SALT = os.getenv("RGPD_SALT", "ELECTRONOVA_RGPD_SALT_2026_")
@@ -20,9 +20,10 @@ PREFIX_SILVER = "ventas"
 def get_s3_client():
     return boto3.client(
         "s3",
-        endpoint_url=S3_ENDPOINT,
+        endpoint_url=MINIO_ENDPOINT,
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        region_name="eu-west-1"
     )
 
 
