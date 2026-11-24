@@ -1,3 +1,47 @@
 services:
   minio:
     image: coollabsio/minio:RELEASE.2025-04-22T22-12-26Z
+    container_name: sbd_minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    env_file:
+      - .env
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./minio_data:/data
+    networks:
+      - lakehouse_net
+
+  postgres:
+    image: postgres:19-alpine
+    container_name: sbd_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    networks:
+      - lakehouse_net
+    depends_on:
+      - minio
+  
+  python-etl:
+    build: .
+    container_name: sbd_python_etl
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app
+    networks:
+      - lakehouse_net
+    depends_on:
+      - postgres
+
+networks:
+  lakehouse_net:
+    driver: bridge
