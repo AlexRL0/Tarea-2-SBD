@@ -1,11 +1,3 @@
-import hashlib
-import io
-import os
-import boto3
-import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
-
 MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT", "http://minio:9000")
 AWS_ACCESS_KEY_ID = os.getenv("MINIO_ACCESS_KEY", "admin")
 AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_SECRET_KEY", "13082004A")
